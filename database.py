@@ -7,6 +7,11 @@ The current data corresponds to:
     -Stations corresponding to one line
 """
 import pandas as pd
+import values
+import json
+import os.path
+import geolocationdata
+import geopy.distance
 
 lines_stations: dict[str, int] = {
     "Akademmistechko": 1,
@@ -131,6 +136,32 @@ adjacent_stations: dict[str, tuple[str]] = {
     "Chervony Khutir": ("Boryspilska")
 }
 
+
+def load_stations_geolocation() -> None:
+    """
+    Updates geolocation for each station
+    :return: None
+    """
+    for station in lines_stations.keys():
+        file_name = values.STATION_JSONS + station + '.json'
+
+        # Load if json exists locally, otherwise send an API request
+        if not os.path.isfile(file_name):
+            geolocationdata.load_geolocation_data()
+
+        raw_json = json.load(open(file_name))  # Load saved json
+        if len(raw_json['results']) > 0:  # No data in json
+            geometry = raw_json['results'][0]['geometry']['location']
+            latitude = geometry['lat']
+            longitude = geometry['lng']
+            stations_geolocation[station] = (latitude, longitude)
+        else:
+            print('Failed to load data for station: ' + station)
+
+
+stations_geolocation: dict[str, tuple[float, float]] = {}
+load_stations_geolocation()
+
 times_1 = pd.read_csv('resources/data/tiempos_1.csv', index_col='Sviatoshynsko-Brovarska Line M1')
 times_2 = pd.read_csv('resources/data/tiempos_2.csv', index_col='Obolonsko–Teremkivska Line M2')
 times_3 = pd.read_csv('resources/data/tiempos_3.csv', index_col='Syretsko-Pecherska Line M3')
@@ -144,6 +175,8 @@ def get_time(origin: str, destination: str) -> float:
     :param destination: Name of destination station
     :return: time between stations or -1 if the stations are invalid (not in the same line or dont exist)
     """
+    if origin == destination:
+        return 0
     if lines_stations.get(origin) == lines_stations.get(destination):
         if lines_stations.get(origin) == 1:
             return float(times_1[destination][origin])
@@ -157,6 +190,19 @@ def get_time(origin: str, destination: str) -> float:
     else:
         return -1.0
 
+
+def get_distance(origin: str, destination: str) -> float:
+    """
+        Distance in Km from station "origin" to station "destination".
+        :param origin: Name of origin station
+        :param destination: Name of destination station
+        :return: distance between stations or -1 if the stations are invalid (p.e. dont exist)
+        """
+    if origin == destination:
+        return 0
+    coords_origin = stations_geolocation[origin]
+    coords_destination = stations_geolocation[destination]
+    return geopy.distance.distance(coords_origin, coords_destination).km
 
 def get_adjacent_stations(station: str) -> tuple[str]:
     """
