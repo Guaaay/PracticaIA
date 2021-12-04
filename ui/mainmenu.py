@@ -11,6 +11,7 @@ lines = []
 clicked = []
 stations = pygame.sprite.Group()     
 
+
 class Boton(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -49,7 +50,7 @@ class Station(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.img, (100,100)) 
         self.selected = not self.selected
 
-
+        
 class line():
     def __init__(self, origin, dest):       
         #origin y est es un int con el número de estación     
@@ -88,7 +89,7 @@ def select_lines(route):
         if (l is not None): 
             l.select()
             pygame.time.delay(500)
-            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 10)
+            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 20)
             pygame.display.update()
 
 
@@ -97,12 +98,13 @@ def select_station(s):
             if(len(clicked)==2):
                 clicked[0].select()
                 clicked[1].select() 
-                clicked.clear()    
+                clicked.clear()  
+                deselect_all_lines()  
 
             s.select()
             stations.draw(screen) 
             pygame.display.update()
-             
+
             if s in clicked:                
                 clicked.remove(s)
             else:
@@ -110,6 +112,11 @@ def select_station(s):
             
             if(len(clicked)==2):
                 select_lines(calculate_route(clicked[0], clicked[1])) 
+
+def deselect_all_lines():
+    for line in lines:
+        line.deselect()
+        
  
 # Setup pygame/window ---------------------------------------- #
 mainClock = pygame.time.Clock()
@@ -221,8 +228,8 @@ def game():
         i = 0
         previous_station = estaciones['110']
         for l in lines:           
-            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 10)      
-                
+            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 20)      
+            
         
         draw_text('game', font, (255, 255, 255), screen, 20, 20)
        
@@ -230,10 +237,10 @@ def game():
 
 
         stations.draw(screen)        
+        pygame.display.flip()
         pygame.display.update()
         mainClock.tick(60)
  
  
-#main_menu()
-game()
+main_menu()
 
