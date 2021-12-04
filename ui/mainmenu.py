@@ -6,6 +6,8 @@ import pygame, sys
 from cte import *
 from pygame.locals import *
 
+from math import atan2, cos, degrees, radians, sin
+import pygame.gfxdraw
 
 lines = []
 clicked = []
@@ -36,7 +38,7 @@ class Station(pygame.sprite.Sprite):
         self.test = 0
         self.id = id
         self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{id}.png"))
-        self.image = pygame.transform.scale(self.img, (100,100)) 
+        self.image = pygame.transform.scale(self.img, (60,60)) 
         self.rect = self.image.get_rect()
         self.rect.center = coord
         self.selected = False
@@ -44,27 +46,46 @@ class Station(pygame.sprite.Sprite):
     def select(self):
         if self.selected:
             self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}.png"))
-            self.image = pygame.transform.scale(self.img, (100,100))             
+            self.image = pygame.transform.scale(self.img, (60,60))             
         else:           
             self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}s.png"))
-            self.image = pygame.transform.scale(self.img, (100,100)) 
+            self.image = pygame.transform.scale(self.img, (60,60)) 
         self.selected = not self.selected
 
         
 class line():
-    def __init__(self, origin, dest):       
+    def __init__(self, origin, dest, color):       
         #origin y est es un int con el número de estación     
         self.origin = origin
-        self.dest = dest     
-        self.color = RED
+        self.dest = dest  
+        self.defaultColor = color   
+        self.color = color
         self.marked = False
 
     def select(self):
         self.color = YELLOW
     def deselect(self):
-        self.color = RED
+        self.color = self.defaultColor
 
+#-----------------------------------------------------------------
+#Aux functions for drawing lines using rotated rectangles
+def Move(rotation, steps, position):
+    """Return coordinate position of an amount of steps in a direction."""
+    xPosition = cos(radians(rotation)) * steps + position[0]
+    yPosition = sin(radians(rotation)) * steps + position[1]
+    return (xPosition, yPosition)
 
+def DrawThickLine(surface, point1, point2, thickness, color):
+    angle = degrees(atan2(point1[1] - point2[1], point1[0] - point2[0]))
+
+    vertices = list()
+    vertices.append(Move(angle-90, thickness, point1))
+    vertices.append(Move(angle+90, thickness, point1))
+    vertices.append(Move(angle+90, thickness, point2))
+    vertices.append(Move(angle-90, thickness, point2))
+
+    pygame.gfxdraw.aapolygon(surface, vertices, color)
+    pygame.gfxdraw.filled_polygon(surface, vertices, color)
 #-----------------------------------------------------------------
 
 
@@ -89,7 +110,7 @@ def select_lines(route):
         if (l is not None): 
             l.select()
             pygame.time.delay(500)
-            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 20)
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color)             
             pygame.display.update()
 
 
@@ -184,21 +205,27 @@ def main_menu():
  
 def game():
     
-       
-    i = 0
-    prev_e = estaciones['110']
-    for e in estaciones:
-        #e es el número de estación (int)
-        pos_e = estaciones[e]
-        stations.add(Station(e, pos_e))
-        if i != 0: lines.append(line(prev_e,e))
-        prev_e = e
-        i += 1
     
+   
+    for e in estaciones:        
+        pos_e = estaciones[e]
+        stations.add(Station(e, pos_e))    
 
+    for i in range (110,127):
+        lines.append(line(str(i),str(i+1), RED))
+    for i in range (210,227):
+        lines.append(line(str(i),str(i+1), BLUE))
+    for i in range (310,327):
+        lines.append(line(str(i),str(i+1), GREEN))
+   
+    for l in lines:           
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            pygame.display.update()            
 
     running = True
     while running:
+
+        
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -211,6 +238,7 @@ def game():
 
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
+                print(pos)
                 for s in stations:
                     if s.rect.collidepoint(pos):
                         select_station(s)
@@ -224,16 +252,21 @@ def game():
 
         screen.fill(WHITE)
 
-        #dibujar estaciones y lineas
-        i = 0
-        previous_station = estaciones['110']
-        for l in lines:           
-            pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 20)      
+        #lineas
+       
+        for l in lines:          
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            #pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 10)   
             
+        
+       
         
         draw_text('game', font, (255, 255, 255), screen, 20, 20)
        
-
+        #River
+        DrawThickLine(screen, (1251, 0) ,(1251,726), 20, WATER)    
+        DrawThickLine(screen, (1255,715) ,(1190,800), 20, WATER)    
+        DrawThickLine(screen, (1195,785) ,(1195,1080), 20, WATER)   
 
 
         stations.draw(screen)        
@@ -242,5 +275,6 @@ def game():
         mainClock.tick(60)
  
  
-main_menu()
+#main_menu()
+game()
 
