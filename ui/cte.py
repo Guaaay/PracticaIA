@@ -1,9 +1,13 @@
 import pygame, sys, os
-game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, '../resources/art')
+game_folder = os.path.dirname('.')
+img_folder = os.path.join(game_folder, '.\\resources\\art')
 start_normal = pygame.image.load(os.path.join(img_folder, 'start_normal.png'))
 start_hover = pygame.image.load(os.path.join(img_folder, 'start_hover.png'))
 start_press = pygame.image.load(os.path.join(img_folder, 'start_press.png'))
+creditos_normal = pygame.image.load(os.path.join(img_folder, 'creditos_normal.png'))
+creditos_hover = pygame.image.load(os.path.join(img_folder, 'creditos_hover.png'))
+creditos_press = pygame.image.load(os.path.join(img_folder, 'creditos_press.png'))
+
 
 WIDTH = 1920  # width of our game window
 HEIGHT = 1080 # height of our game window

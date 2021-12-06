@@ -1,6 +1,6 @@
 #!/usr/bin/python3.4
 # Setup Python ----------------------------------------------- #
-from os import sendfile
+
 import pygame, sys
 
 from cte import *
@@ -8,19 +8,19 @@ from pygame.locals import *
 
 from math import atan2, cos, degrees, radians, sin
 import pygame.gfxdraw
-
+clock = pygame.time.Clock()
 lines = []
 clicked = []
 stations = pygame.sprite.Group()     
-
-
-class Boton(pygame.sprite.Sprite):
+FPS = 60
+SIZE = WIDTH, HEIGHT = 1920, 1080
+class BotonStart(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.test = 0
         self.image = start_normal
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+        self.rect.center = (WIDTH / 2.445, HEIGHT/1.8)
     def pressed(self):        
         self.image = start_press
 
@@ -29,8 +29,61 @@ class Boton(pygame.sprite.Sprite):
 
     def no_hover(self):
         self.image = start_normal
+
+class BotonCredits(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.test = 0
+        self.image = creditos_normal
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 1.69, HEIGHT/1.8)
+    def pressed(self):        
+        self.image = creditos_press
+
+    def hover(self):
+        self.image = creditos_hover
+
+    def no_hover(self):
+        self.image = creditos_normal
    
-        
+class MenuBackground(pygame.sprite.Sprite):
+    def __init__(self, position, images):
+        super(MenuBackground, self).__init__()
+        size = (WIDTH, HEIGHT)
+        self.rect = pygame.Rect(position, size)
+        self.images = images
+        self.images_right = images
+        self.index = 0
+        self.image = images[self.index]  # 'image' is the current image of the animation.
+
+        self.animation_time = 0.1
+        self.current_time = 0
+
+        self.animation_frames = 6
+        self.current_frame = 0
+    def update(self,dt):
+        """This is the method that's being called when 'botonstart.update(dt)' is called.""" 
+        # Switch between the two update methods by commenting/uncommenting.
+        self.update_time_dependent(dt)
+        # self.update_frame_dependent()
+
+    def update_time_dependent(self, dt):
+        """
+        Updates the image of Sprite approximately every 0.1 second.
+
+        Args:
+            dt: Time elapsed between each frame.
+        """
+
+        self.current_time += dt
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            self.index = (self.index + 1) % len(self.images)
+            self.image = self.images[self.index]
+
+
+
+
 class Station(pygame.sprite.Sprite):
     def __init__(self, id, coord):
         pygame.sprite.Sprite.__init__(self)
@@ -38,7 +91,7 @@ class Station(pygame.sprite.Sprite):
         self.test = 0
         self.id = id
         self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{id}.png"))
-        self.image = pygame.transform.scale(self.img, (60,60)) 
+        self.image = pygame.transform.scale(self.img, (90,90)) 
         self.rect = self.image.get_rect()
         self.rect.center = coord
         self.selected = False
@@ -46,10 +99,10 @@ class Station(pygame.sprite.Sprite):
     def select(self):
         if self.selected:
             self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}.png"))
-            self.image = pygame.transform.scale(self.img, (60,60))             
+            self.image = pygame.transform.scale(self.img, (90,90))             
         else:           
             self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}s.png"))
-            self.image = pygame.transform.scale(self.img, (60,60)) 
+            self.image = pygame.transform.scale(self.img, (90,90)) 
         self.selected = not self.selected
 
         
@@ -87,6 +140,14 @@ def DrawThickLine(surface, point1, point2, thickness, color):
     pygame.gfxdraw.aapolygon(surface, vertices, color)
     pygame.gfxdraw.filled_polygon(surface, vertices, color)
 #-----------------------------------------------------------------
+
+#carga las imagenes de un directorio y devuelve una lista
+def load_images(path):
+    images = []
+    for file_name in os.listdir(path):
+        image = pygame.image.load(path + os.sep + file_name).convert()
+        images.append(image)
+    return images
 
 
 
@@ -157,33 +218,50 @@ def draw_text(text, font, color, surface, x, y):
 click = False
  
 def main_menu():
-    all_sprites = pygame.sprite.Group()    
-    button = Boton()
-    all_sprites.add(button)
+    botonstart = pygame.sprite.Group()
+    botoncreditos = pygame.sprite.Group()
+    startButton = BotonStart()
+    creditsButton = BotonCredits()
+    botonstart.add(startButton)
+    botoncreditos.add(creditsButton)
+    images_bg = load_images(path='.//resources//art//background_menu')
+    fondo = MenuBackground(position=(0, 0), images=images_bg)
+    bg_sprites = pygame.sprite.Group()
+    bg_sprites.add(fondo)
 
-
-    while True:        
-        screen.fill(WHITE)
+    while True:
+        dt = clock.tick(FPS) / 1000
         draw_text('main menu', font, (255, 255, 255), screen, 20, 20)
  
         mx, my = pygame.mouse.get_pos()
  
-        all_sprites.draw(screen)
+        botonstart.draw(screen)
 
-        if button.rect.collidepoint((mx, my)):
-            button.hover()            
+        if startButton.rect.collidepoint((mx, my)):
+            startButton.hover()     
             if click:
-                
-                button.pressed()           
-                screen.fill(WHITE)                
-                all_sprites.draw(screen)
+                startButton.pressed()                           
+                botonstart.draw(screen)
                 pygame.display.update()
                 
                 pygame.time.delay(300)
                 game()
     
         else:
-            button.no_hover()
+            startButton.no_hover()
+        if creditsButton.rect.collidepoint((mx, my)):
+            creditsButton.hover()     
+            if click:
+                creditsButton.pressed()                           
+                botoncreditos.draw(screen)
+                pygame.display.update()
+                
+                pygame.time.delay(300)
+                game()
+    
+        else:
+            creditsButton.no_hover()
+
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -196,12 +274,14 @@ def main_menu():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-        button.hover
-        all_sprites.draw(screen)
+
+        startButton.hover
+        bg_sprites.update(dt)
+        bg_sprites.draw(screen)
+        botonstart.draw(screen)
+        botoncreditos.draw(screen)
         pygame.display.update()
         mainClock.tick(60)
-
-
  
 def game():
     
@@ -275,6 +355,6 @@ def game():
         mainClock.tick(60)
  
  
-#main_menu()
+main_menu()
 game()
 
