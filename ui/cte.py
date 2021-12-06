@@ -1,4 +1,5 @@
 import pygame, sys, os
+
 game_folder = os.path.dirname('.')
 img_folder = os.path.join(game_folder, '.\\resources\\art')
 start_normal = pygame.image.load(os.path.join(img_folder, 'start_normal.png'))

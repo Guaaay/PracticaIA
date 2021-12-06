@@ -2,18 +2,24 @@
 # Setup Python ----------------------------------------------- #
 
 import pygame, sys
-
+from pygame import mixer
 from cte import *
 from pygame.locals import *
-
 from math import atan2, cos, degrees, radians, sin
 import pygame.gfxdraw
+
 clock = pygame.time.Clock()
 lines = []
 clicked = []
 stations = pygame.sprite.Group()     
 FPS = 60
 SIZE = WIDTH, HEIGHT = 1920, 1080
+
+mixer.init()
+mixer.music.load(".//resources//music//anthem.mp3")
+mixer.music.set_volume(0.7)
+mixer.music.play()
+
 class BotonStart(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
