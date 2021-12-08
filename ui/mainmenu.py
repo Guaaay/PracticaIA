@@ -7,6 +7,8 @@ from cte import *
 from pygame.locals import *
 from math import atan2, cos, degrees, radians, sin
 import pygame.gfxdraw
+from algoritmo import * 
+#from algoritmo import *
 
 clock = pygame.time.Clock()
 lines = []
@@ -206,9 +208,16 @@ def get_line(origin, dest):
             return l
 
 #Devuelve la ruta para ir de una estación a otra
-def calculate_route(origin, dest):
+def calculate_route(origin, dest): 
     #Aquí se llamaría a la función que nos devuelve el map con las líneas a cambiar de color
-    return {'114':113, '113':112, '112':111, '111':110}
+    algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
+    ruta = algoritmo.best_route()
+    result = {}
+    for e in ruta:
+       result[lines_stations_number[e]] = lines_stations_number[ruta[e]]
+    result = {value : key for (key, value) in result.items()}
+    print(result)
+    return result
 
 
 #Selecciona las lineas de una ruta y les cambia el color
@@ -223,7 +232,7 @@ def select_lines(route):
 
 
 #Cambia el color de las estaciones al seleccionarlas
-def select_station(s):   
+def select_station(s):
             if(len(clicked)==2):
                 clicked[0].select()
                 clicked[1].select() 

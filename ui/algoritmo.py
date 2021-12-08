@@ -1,16 +1,20 @@
 from queue import PriorityQueue
-
+from database import *
 '''
 diccionario de arrays que tiene como key el nombre de la estación y como value el array de los vecinos de dicha estación
 calculamos el tiempo total como la suma de los caminos entre nodos vecinos y al final le sumamos el total de paradas realizadas por el metro*20s
 nuestra función recibe como parámetros de entrada el nodo de inicio y del final del trayecto
 '''
-
+''' def reconstruct_path(came_from, actual, draw):
+		while actual in came_from:
+        	actual = came_from[actual]
+        	actual.make_path()
+        	draw() '''
 
 class Algoritmo():
     def __init__(self, start,end,map):
-        self.start = start
-        self.end = end
+        self.start = lines_number_station[start]
+        self.end = lines_number_station[end]
         self.map = map
     
     def best_route(self):
@@ -43,28 +47,25 @@ class Algoritmo():
                 return came_from
 
             for vecino in self.map[actual]:
-                temp_g_n = g_n[actual] + get_time(actual,vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
+                temp_g_n = g_n[actual] + get_time(actual, vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
 
                 if temp_g_n < g_n[vecino]:
                     came_from[vecino] = actual
                     g_n[vecino] = temp_g_n
-                    f_n[vecino] = temp_g_n + self.h(vecino.get_pos(), self.end.get_pos())
+                    f_n[vecino] = temp_g_n + self.h(vecino, self.end)
                     if vecino not in open_set_hash:
                         count += 1
                         open_set.put((f_n[vecino], count, vecino))
                         open_set_hash.add(vecino)
-                        vecino.make_open() # grafico: marcar nodo como abierto
+                        #vecino.make_open() # grafico: marcar nodo como abierto
 
             if actual != self.start:
-                actual.make_closed() # grafico: marcar nodo como visitado
+                pass
+                #actual.make_closed() # grafico: marcar nodo como visitado
 
         return None
 
     def h(self,p1, p2):
         return get_time(p1,p2) * 1.5
 
-	""" def reconstruct_path(came_from, actual, draw):
-		while actual in came_from:
-        	actual = came_from[actual]
-        	actual.make_path()
-        	draw() """
+	
