@@ -43,7 +43,7 @@ class Algoritmo():
                 return came_from
 
             for vecino in self.map[actual]:
-                temp_g_n = g_n[actual] + get_tiempo(actual,vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
+                temp_g_n = g_n[actual] + get_time(actual,vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
 
                 if temp_g_n < g_n[vecino]:
                     came_from[vecino] = actual
@@ -61,7 +61,7 @@ class Algoritmo():
         return None
 
     def h(self,p1, p2):
-        return get_tiempo(p1,p2) * 1.5
+        return get_time(p1,p2) * 1.5
 
 	""" def reconstruct_path(came_from, actual, draw):
 		while actual in came_from:
