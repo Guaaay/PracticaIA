@@ -17,16 +17,15 @@ SIZE = WIDTH, HEIGHT = 1920, 1080
 
 mixer.init()
 mixer.music.load(".//resources//music//anthem.mp3")
-mixer.music.set_volume(0.7)
+mixer.music.set_volume(0.1)
 mixer.music.play()
 
 class BotonStart(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.test = 0
         self.image = start_normal
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2.445, HEIGHT/1.8)
+        self.rect.center = (WIDTH / 2.446, HEIGHT/1.8)
     def pressed(self):        
         self.image = start_press
 
@@ -39,10 +38,9 @@ class BotonStart(pygame.sprite.Sprite):
 class BotonCredits(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.test = 0
         self.image = creditos_normal
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 1.69, HEIGHT/1.8)
+        self.rect.center = (WIDTH / 1.693, HEIGHT/1.8)
     def pressed(self):        
         self.image = creditos_press
 
@@ -51,7 +49,15 @@ class BotonCredits(pygame.sprite.Sprite):
 
     def no_hover(self):
         self.image = creditos_normal
-   
+    
+class Titulo(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.img = titulo
+        self.image = self.image = pygame.transform.scale(self.img, (2000,2000)) 
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT/4)
+    
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self, position, images):
         super(MenuBackground, self).__init__()
@@ -87,6 +93,41 @@ class MenuBackground(pygame.sprite.Sprite):
             self.index = (self.index + 1) % len(self.images)
             self.image = self.images[self.index]
 
+class Tren(pygame.sprite.Sprite):
+    def __init__(self, position, images):
+        super(Tren, self).__init__()
+        size = (100, 100)
+        self.rect = images[0].get_rect()
+        self.rect.center = (position)
+        self.images = images
+        self.images_right = images
+        self.index = 0
+        self.image = images[self.index]  # 'image' is the current image of the animation.
+
+        self.animation_time = 0.1
+        self.current_time = 0
+
+        self.animation_frames = 6
+        self.current_frame = 0
+    def update(self,dt):
+        """This is the method that's being called when 'botonstart.update(dt)' is called.""" 
+        # Switch between the two update methods by commenting/uncommenting.
+        self.update_time_dependent(dt)
+        # self.update_frame_dependent()
+
+    def update_time_dependent(self, dt):
+        """
+        Updates the image of Sprite approximately every 0.1 second.
+
+        Args:
+            dt: Time elapsed between each frame.
+        """
+
+        self.current_time += dt
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            self.index = (self.index + 1) % len(self.images)
+            self.image = self.images[self.index]
 
 
 
@@ -151,7 +192,7 @@ def DrawThickLine(surface, point1, point2, thickness, color):
 def load_images(path):
     images = []
     for file_name in os.listdir(path):
-        image = pygame.image.load(path + os.sep + file_name).convert()
+        image = pygame.image.load(path + os.sep + file_name)
         images.append(image)
     return images
 
@@ -228,12 +269,17 @@ def main_menu():
     botoncreditos = pygame.sprite.Group()
     startButton = BotonStart()
     creditsButton = BotonCredits()
+    titulo = Titulo()
     botonstart.add(startButton)
     botoncreditos.add(creditsButton)
     images_bg = load_images(path='.//resources//art//background_menu')
+    images_tren = load_images(path='.//resources//art//tren')
     fondo = MenuBackground(position=(0, 0), images=images_bg)
+    tren = Tren(position = (WIDTH/2,HEIGHT/1.2),images = images_tren)
     bg_sprites = pygame.sprite.Group()
     bg_sprites.add(fondo)
+    bg_sprites.add(titulo)
+    bg_sprites.add(tren)
 
     while True:
         dt = clock.tick(FPS) / 1000
