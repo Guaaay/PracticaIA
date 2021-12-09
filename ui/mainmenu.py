@@ -213,13 +213,16 @@ def calculate_route(origin, dest):
     print(int(origin.id))
     print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
-    ruta = algoritmo.best_route()
-    result = {}
-    for e in ruta:
-       result[lines_stations_number[e]] = lines_stations_number[ruta[e]]
-    result = {value : key for (key, value) in result.items()}
-    print(result)
-    return result
+    ruta = algoritmo.best_route() # Ahora conseguimos una lista de estaciones por las q hemos pasado
+    for i, est in enumerate(ruta):
+        ruta[i] = lines_stations_number[ruta[i]] # traduciendo nombre de estacion a nº
+    # result = {}
+    # for e in ruta:
+    #    result[lines_stations_number[e]] = lines_stations_number[ruta[e]]
+    # result = {value : key for (key, value) in result.items()}
+    # print(result)
+    print(ruta)
+    return ruta
 
 
 #Selecciona las lineas de una ruta y les cambia el color

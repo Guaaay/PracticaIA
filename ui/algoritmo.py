@@ -44,7 +44,12 @@ class Algoritmo():
             open_set_hash.remove(actual)
 
             if actual == self.end:
-                return came_from
+                res = [actual]
+                while actual in came_from:
+		            actual = came_from[actual]
+                    res.append(actual)
+
+                return res.reverse()
             for vecino in self.map[actual]:
                 temp_g_n = g_n[actual] + get_time(actual, vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
                 if temp_g_n < g_n[vecino]:
