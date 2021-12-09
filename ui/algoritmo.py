@@ -45,10 +45,8 @@ class Algoritmo():
 
             if actual == self.end:
                 return came_from
-
             for vecino in self.map[actual]:
                 temp_g_n = g_n[actual] + get_time(actual, vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
-
                 if temp_g_n < g_n[vecino]:
                     came_from[vecino] = actual
                     g_n[vecino] = temp_g_n

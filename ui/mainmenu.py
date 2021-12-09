@@ -210,6 +210,8 @@ def get_line(origin, dest):
 #Devuelve la ruta para ir de una estación a otra
 def calculate_route(origin, dest): 
     #Aquí se llamaría a la función que nos devuelve el map con las líneas a cambiar de color
+    print(int(origin.id))
+    print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
     ruta = algoritmo.best_route()
     result = {}
