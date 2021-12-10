@@ -236,7 +236,8 @@ def calculate_route(origin, dest):
 
 
 #Selecciona las lineas de una ruta y les cambia el color
-def select_lines(route):    
+def select_lines(route): 
+    print("---------------------", route)   
     for e in route:
         l = get_line(str(e),str(route[e]))        
         if (l is not None): 
