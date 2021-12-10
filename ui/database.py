@@ -10,6 +10,8 @@ import pandas as pd
 import values
 import json
 import os.path
+from pathlib import Path
+
 
 lines_stations: dict[str, int] = {
     "Akademmistechko": 1,
@@ -217,9 +219,9 @@ adjacent_stations: dict[str, tuple[str]] = {
 '''stations_geolocation: dict[str, tuple[float, float]] = {}
 load_stations_geolocation()'''
 
-times_1 = pd.read_csv('resources/data/tiempos_1.csv', index_col='Sviatoshynsko-Brovarska Line M1')
-times_2 = pd.read_csv('resources/data/tiempos_2.csv', index_col='Obolonsko–Teremkivska Line M2')
-times_3 = pd.read_csv('resources/data/tiempos_3.csv', index_col='Syretsko-Pecherska Line M3')
+times_1 = pd.read_csv(Path('../resources/data/tiempos_1.csv'), index_col='Sviatoshynsko-Brovarska Line M1')
+times_2 = pd.read_csv(Path('../resources/data/tiempos_2.csv'), index_col='Obolonsko–Teremkivska Line M2')
+times_3 = pd.read_csv(Path('../resources/data/tiempos_3.csv'), index_col='Syretsko-Pecherska Line M3')
 
 
 def get_time(origin: str, destination: str) -> float:

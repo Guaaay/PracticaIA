@@ -1,15 +1,16 @@
 import pygame, sys, os
+from pathlib import Path
 
-game_folder = os.path.dirname('.')
-img_folder = os.path.join(game_folder, '.\\resources\\art')
-start_normal = pygame.image.load(os.path.join(img_folder, 'start_normal.png'))
-start_hover = pygame.image.load(os.path.join(img_folder, 'start_hover.png'))
-start_press = pygame.image.load(os.path.join(img_folder, 'start_press.png'))
-creditos_normal = pygame.image.load(os.path.join(img_folder, 'creditos_normal.png'))
-creditos_hover = pygame.image.load(os.path.join(img_folder, 'creditos_hover.png'))
-creditos_press = pygame.image.load(os.path.join(img_folder, 'creditos_press.png'))
-titulo = pygame.image.load(os.path.join(img_folder, 'titulo_practica.png'))
-game_background = pygame.image.load(os.path.join(img_folder, 'gamebackgroundm.jpg'))
+#game_folder = os.path.dirname('.')
+#img_folder = os.path.join(game_folder, '.\\resources\\art')
+start_normal = pygame.image.load(Path('../resources/art/start_normal.png'))
+start_hover = pygame.image.load(Path('../resources/art/start_hover.png'))
+start_press = pygame.image.load(Path('../resources/art/start_press.png'))
+creditos_normal = pygame.image.load(Path('../resources/art/creditos_normal.png'))
+creditos_hover = pygame.image.load(Path('../resources/art/creditos_hover.png'))
+creditos_press = pygame.image.load(Path('../resources/art/creditos_press.png'))
+titulo = pygame.image.load(Path('../resources/art/titulo_practica.png'))
+game_background = pygame.image.load(Path('../resources/art/gamebackgroundm.jpg'))
 
 
 WIDTH = 1920  # width of our game window

@@ -9,6 +9,7 @@ from math import atan2, cos, degrees, radians, sin
 import pygame.gfxdraw
 from algoritmo import * 
 #from algoritmo import *
+from pathlib import Path
 
 clock = pygame.time.Clock()
 lines = []
@@ -18,7 +19,7 @@ FPS = 60
 SIZE = WIDTH, HEIGHT = 1920, 1080
 
 mixer.init()
-mixer.music.load(".//resources//music//anthem.mp3")
+mixer.music.load(Path("../resources/music/anthem.mp3"))
 mixer.music.set_volume(0.1)
 mixer.music.play()
 
@@ -148,7 +149,7 @@ class Station(pygame.sprite.Sprite):
         
         self.test = 0
         self.id = id
-        self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{id}.png"))
+        self.img = pygame.image.load(Path(f"../resources/art/estaciones/{id}.png"))
         self.image = pygame.transform.scale(self.img, (90,90)) 
         self.rect = self.image.get_rect()
         self.rect.center = coord
@@ -156,10 +157,10 @@ class Station(pygame.sprite.Sprite):
     
     def select(self):
         if self.selected:
-            self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}.png"))
+            self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}.png"))
             self.image = pygame.transform.scale(self.img, (90,90))             
         else:           
-            self.img = pygame.image.load(os.path.join(img_folder,f"estaciones/{self.id}s.png"))
+            self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}s.png"))
             self.image = pygame.transform.scale(self.img, (90,90)) 
         self.selected = not self.selected
 
@@ -203,7 +204,7 @@ def DrawThickLine(surface, point1, point2, thickness, color):
 def load_images(path):
     images = []
     for file_name in os.listdir(path):
-        image = pygame.image.load(path + os.sep + file_name)
+        image = pygame.image.load(str(path) + os.sep + file_name)
         images.append(image)
     return images
 
@@ -295,8 +296,8 @@ def main_menu():
     titulo = Titulo()
     botonstart.add(startButton)
     botoncreditos.add(creditsButton)
-    images_bg = load_images(path='.//resources//art//background_menu')
-    images_tren = load_images(path='.//resources//art//tren')
+    images_bg = load_images(path=Path('../resources/art/background_menu'))
+    images_tren = load_images(path=Path('../resources/art/tren'))
     fondo = MenuBackground(position=(0, 0), images=images_bg)
     tren = Tren(position = (WIDTH/2,HEIGHT/1.2),images = images_tren)
     bg_sprites = pygame.sprite.Group()
