@@ -175,7 +175,7 @@ class line():
         self.marked = False
 
     def select(self):
-        self.color = YELLOW
+        self.color = (102,57,49)
     def deselect(self):
         self.color = self.defaultColor
 
@@ -372,6 +372,7 @@ def game():
         stations.add(Station(e, pos_e))    
 
     for i in range (110,127):
+<<<<<<< HEAD
         lines.append(line(str(i),str(i+1), RED))
 
     for i in range (210,227):
@@ -384,6 +385,14 @@ def game():
     lines.append(line(str(319),str(321), GREEN))
 
 
+=======
+        lines.append(line(str(i),str(i+1), (199,14,14)))
+    for i in range (210,227):
+        lines.append(line(str(i),str(i+1), (56,96,246)))
+    for i in range (310,327):
+        lines.append(line(str(i),str(i+1), (36,173,36)))
+   
+>>>>>>> e7a77babc33db088c29933985dbe8d79bf4599ad
     for l in lines:           
             DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
             pygame.display.update()            
