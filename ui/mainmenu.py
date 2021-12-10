@@ -224,7 +224,7 @@ def calculate_route(origin, dest):
     print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
     ruta = algoritmo.best_route() # Ahora conseguimos una lista de estaciones por las q hemos pasado
-    for i, est in enumerate(ruta):
+    for i in enumerate(ruta):
         ruta[i] = lines_stations_number[ruta[i]] # traduciendo nombre de estacion a nº
     # result = {}
     # for e in ruta:
@@ -304,6 +304,7 @@ def main_menu():
     bg_sprites.add(fondo)
     bg_sprites.add(titulo)
     bg_sprites.add(tren)
+    click = False
 
     while True:
         dt = clock.tick(FPS) / 1000
@@ -320,7 +321,7 @@ def main_menu():
                 botonstart.draw(screen)
                 pygame.display.update()
                 
-                pygame.time.delay(300)
+                pygame.time.delay(500)
                 game()
     
         else:
@@ -360,6 +361,7 @@ def main_menu():
         mainClock.tick(60)
  
 def game():
+    
     game_back = GameBackground(position = (0,0),image = game_background)
     bg_game = pygame.sprite.Group()
     bg_game.add(game_back)
@@ -371,15 +373,22 @@ def game():
 
     for i in range (110,127):
         lines.append(line(str(i),str(i+1), RED))
+
     for i in range (210,227):
         lines.append(line(str(i),str(i+1), BLUE))
+
     for i in range (310,327):
-        lines.append(line(str(i),str(i+1), GREEN))
-   
+        if(i!=312 and i!= 319 and i!= 313 and i!=320):
+            lines.append(line(str(i),str(i+1), GREEN))
+    lines.append(line(str(312),str(314), GREEN))    
+    lines.append(line(str(319),str(321), GREEN))
+
+
     for l in lines:           
             DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
             pygame.display.update()            
 
+    click = False
     running = True
     while running:
 
@@ -394,7 +403,7 @@ def game():
                     pygame.quit()
                     sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 print(pos)
                 for s in stations:
@@ -404,12 +413,15 @@ def game():
                         
                     
             
-                    
-                
-                
-
         bg_game.draw(screen)
+        
+                
+          #River
+        DrawThickLine(screen, (1251, 0) ,(1251,726), 20, WATER)    
+        DrawThickLine(screen, (1255,715) ,(1190,800), 20, WATER)    
+        DrawThickLine(screen, (1195,785) ,(1195,1080), 20, WATER)          
 
+        
         #lineas
        
         for l in lines:          
@@ -421,10 +433,7 @@ def game():
         
         draw_text('game', font, (255, 255, 255), screen, 20, 20)
        
-        #River
-        DrawThickLine(screen, (1251, 0) ,(1251,726), 20, WATER)    
-        DrawThickLine(screen, (1255,715) ,(1190,800), 20, WATER)    
-        DrawThickLine(screen, (1195,785) ,(1195,1080), 20, WATER)   
+       
 
 
         stations.draw(screen)        
