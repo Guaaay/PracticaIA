@@ -11,12 +11,13 @@ nuestra función recibe como parámetros de entrada el nodo de inicio y del fina
         	actual.make_path()
         	draw() '''
 
+
 class Algoritmo():
-    def __init__(self, start,end,map):
+    def __init__(self, start, end, map):
         self.start = lines_number_station[start]
         self.end = lines_number_station[end]
         self.map = map
-    
+
     def best_route(self):
         count = 0
         open_set = PriorityQueue()
@@ -46,7 +47,7 @@ class Algoritmo():
             if actual == self.end:
                 res = [actual]
                 while actual in came_from:
-		            actual = came_from[actual]
+                    actual = came_from[actual]
                     res.append(actual)
 
                 return res.reverse()
