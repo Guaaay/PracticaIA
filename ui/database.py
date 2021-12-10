@@ -71,7 +71,7 @@ lines_stations: dict[str, int] = {
 lines_stations_number: dict[str, int] = {
     "Akademmistechko": 110,
     "Zhytomyrska": 111,
-    "Sviatoshyn": 110,
+    "Sviatoshyn": 112,
     "Nyvky": 113,
     "Beresteiska": 114,
     "Shuliavska": 115,
