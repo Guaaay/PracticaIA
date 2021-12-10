@@ -204,7 +204,7 @@ def DrawThickLine(surface, point1, point2, thickness, color):
 def load_images(path):
     images = []
     for file_name in os.listdir(path):
-        image = pygame.image.load(path + os.sep + file_name)
+        image = pygame.image.load(str(path) + os.sep + file_name)
         images.append(image)
     return images
 
