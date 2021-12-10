@@ -152,7 +152,7 @@ class Station(pygame.sprite.Sprite):
         self.img = pygame.image.load(Path(f"../resources/art/estaciones/{id}.png"))
         self.image = pygame.transform.scale(self.img, (90,90)) 
         self.rect = self.image.get_rect()
-        self.rect.center = coord
+        self.rect.center = (coord[0], coord[1])
         self.selected = False
     
     def select(self):

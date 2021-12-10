@@ -14,7 +14,7 @@ WHITE = (255, 255, 255)
 
 draw = []
 
-bg = pygame.image.load(".//ui//Dibujo (1).png")
+bg = pygame.image.load("test.png")
 
 
 
