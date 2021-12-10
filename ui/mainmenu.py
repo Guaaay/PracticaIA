@@ -237,8 +237,8 @@ def calculate_route(origin, dest):
 
 #Selecciona las lineas de una ruta y les cambia el color
 def select_lines(route):    
-    for e in route:
-        l = get_line(str(e),str(route[e]))        
+    for i,e in enumerate(route):
+        l = get_line(str(e),str(route[i]))        
         if (l is not None): 
             l.select()
             pygame.time.delay(500)
