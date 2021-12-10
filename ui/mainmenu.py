@@ -238,7 +238,7 @@ def calculate_route(origin, dest):
     return ruta
 
 #devuelve el tiempo empleado para una determinada ruta 
-def calculate_time(ruta):
+def calculate_time(ruta: list) -> float:
     time = 0
     for pair in enumerate(ruta):
         i = pair[0]
