@@ -75,6 +75,15 @@ class MenuBackground(pygame.sprite.Sprite):
 
         self.animation_frames = 6
         self.current_frame = 0
+
+
+class GameBackground(pygame.sprite.Sprite):
+    def __init__(self, position, image):
+        super(GameBackground, self).__init__()
+        size = (WIDTH, HEIGHT)
+        self.rect = pygame.Rect(position, size)
+        self.image = image
+
     def update(self,dt):
         """This is the method that's being called when 'botonstart.update(dt)' is called.""" 
         # Switch between the two update methods by commenting/uncommenting.
@@ -350,7 +359,9 @@ def main_menu():
         mainClock.tick(60)
  
 def game():
-    
+    game_back = GameBackground(position = (0,0),image = game_background)
+    bg_game = pygame.sprite.Group()
+    bg_game.add(game_back)
     
    
     for e in estaciones:        
@@ -396,7 +407,7 @@ def game():
                 
                 
 
-        screen.fill(WHITE)
+        bg_game.draw(screen)
 
         #lineas
        

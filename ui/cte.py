@@ -9,6 +9,7 @@ creditos_normal = pygame.image.load(os.path.join(img_folder, 'creditos_normal.pn
 creditos_hover = pygame.image.load(os.path.join(img_folder, 'creditos_hover.png'))
 creditos_press = pygame.image.load(os.path.join(img_folder, 'creditos_press.png'))
 titulo = pygame.image.load(os.path.join(img_folder, 'titulo_practica.png'))
+game_background = pygame.image.load(os.path.join(img_folder, 'gamebackgroundm.jpg'))
 
 
 WIDTH = 1920  # width of our game window
