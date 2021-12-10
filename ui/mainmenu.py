@@ -224,7 +224,7 @@ def calculate_route(origin, dest):
     print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
     ruta = algoritmo.best_route() # Ahora conseguimos una lista de estaciones por las q hemos pasado
-    for i in enumerate(ruta):
+    for i, est in enumerate(ruta):
         ruta[i] = lines_stations_number[ruta[i]] # traduciendo nombre de estacion a nº
     # result = {}
     # for e in ruta:

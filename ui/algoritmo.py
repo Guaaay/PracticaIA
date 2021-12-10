@@ -50,9 +50,11 @@ class Algoritmo():
                     actual = came_from[actual]
                     res.append(actual)
 
-                return res.reverse()
+                return list(reversed(res))
+
             for vecino in self.map[actual]:
-                temp_g_n = g_n[actual] + get_time(actual, vecino) ## función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
+                # función de ruben y vinh que devuelve el tiempo entre estaciones vecinas
+                temp_g_n = g_n[actual] + get_time(actual, vecino)
                 if temp_g_n < g_n[vecino]:
                     came_from[vecino] = actual
                     g_n[vecino] = temp_g_n
@@ -61,15 +63,13 @@ class Algoritmo():
                         count += 1
                         open_set.put((f_n[vecino], count, vecino))
                         open_set_hash.add(vecino)
-                        #vecino.make_open() # grafico: marcar nodo como abierto
+                        # vecino.make_open() # grafico: marcar nodo como abierto
 
             if actual != self.start:
                 pass
-                #actual.make_closed() # grafico: marcar nodo como visitado
+                # actual.make_closed() # grafico: marcar nodo como visitado
 
         return None
 
-    def h(self,p1, p2):
-        return get_time(p1,p2) * 1.5
-
-	
+    def h(self, p1, p2):
+        return get_time(p1, p2) * 1.5
