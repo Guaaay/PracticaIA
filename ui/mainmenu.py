@@ -232,8 +232,20 @@ def calculate_route(origin, dest):
     # result = {value : key for (key, value) in result.items()}
     # print(result)
     print(ruta)
+    
+    print("EL TIEMPO EMPLEADO PUTOOOOOOO: ",calculate_time(ruta))
+    
     return ruta
 
+#devuelve el tiempo empleado para una determinada ruta 
+def calculate_time(ruta):
+    time = 0
+    for pair in enumerate(ruta):
+        i = pair[0]
+        if( i < len(ruta)-1):
+            time += get_time(lines_number_station[ruta[i]],lines_number_station[ruta[i+1]])
+    
+    return time
 
 #Selecciona las lineas de una ruta y les cambia el color
 
