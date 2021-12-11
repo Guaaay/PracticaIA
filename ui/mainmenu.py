@@ -312,6 +312,7 @@ def main_menu():
     bg_sprites.add(titulo)
     bg_sprites.add(tren)
     click = False
+    
 
     while True:
         dt = clock.tick(FPS) / 1000
@@ -394,7 +395,7 @@ def game():
 
 
     for l in lines:           
-            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 12, l.color) 
             pygame.display.update()            
 
     click = False
@@ -434,7 +435,7 @@ def game():
         #lineas
        
         for l in lines:          
-            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 12, l.color) 
             #pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 10)   
             
         
@@ -442,7 +443,7 @@ def game():
         
         draw_text('game', font, (255, 255, 255), screen, 20, 20)
        
-       
+      
 
 
         stations.draw(screen)        
