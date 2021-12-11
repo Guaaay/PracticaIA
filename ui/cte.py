@@ -11,6 +11,7 @@ creditos_hover = pygame.image.load(Path('../resources/art/creditos_hover.png'))
 creditos_press = pygame.image.load(Path('../resources/art/creditos_press.png'))
 titulo = pygame.image.load(Path('../resources/art/titulo_practica.png'))
 game_background = pygame.image.load(Path('../resources/art/gamebackgroundm.jpg'))
+creditos = pygame.image.load(Path('../resources/art/marcocreditos.png'))
 
 
 WIDTH = 1920  # width of our game window

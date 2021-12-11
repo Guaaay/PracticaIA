@@ -60,6 +60,14 @@ class Titulo(pygame.sprite.Sprite):
         self.image = self.image = pygame.transform.scale(self.img, (2000,2000)) 
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT/4)
+
+class Creditos(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.img = titulo
+        self.image = self.image = pygame.transform.scale(self.img, (2000,2000)) 
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT/4)
     
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self, position, images):
@@ -76,7 +84,25 @@ class MenuBackground(pygame.sprite.Sprite):
 
         self.animation_frames = 6
         self.current_frame = 0
+    def update(self,dt):
+        """This is the method that's being called when 'botonstart.update(dt)' is called.""" 
+        # Switch between the two update methods by commenting/uncommenting.
+        self.update_time_dependent(dt)
+        # self.update_frame_dependent()
 
+    def update_time_dependent(self, dt):
+        """
+        Updates the image of Sprite approximately every 0.1 second.
+
+        Args:
+            dt: Time elapsed between each frame.
+        """
+
+        self.current_time += dt
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            self.index = (self.index + 1) % len(self.images)
+            self.image = self.images[self.index]
 
 class GameBackground(pygame.sprite.Sprite):
     def __init__(self, position, image):
@@ -328,7 +354,7 @@ def main_menu():
                 botonstart.draw(screen)
                 pygame.display.update()
                 
-                pygame.time.delay(500)
+                pygame.time.delay(200)
                 game()
     
         else:
@@ -340,8 +366,8 @@ def main_menu():
                 botoncreditos.draw(screen)
                 pygame.display.update()
                 
-                pygame.time.delay(300)
-                game()
+                pygame.time.delay(100)
+                credits()
     
         else:
             creditsButton.no_hover()
@@ -373,6 +399,7 @@ def game():
     bg_game = pygame.sprite.Group()
     bg_game.add(game_back)
     
+    
    
     for e in estaciones:        
         pos_e = estaciones[e]
@@ -380,16 +407,16 @@ def game():
 
     for i in range (110,127):
 
-        lines.append(line(str(i),str(i+1), RED))
+        lines.append(line(str(i),str(i+1), (199,14,14)))
 
     for i in range (210,227):
-        lines.append(line(str(i),str(i+1), BLUE))
+        lines.append(line(str(i),str(i+1), (56,96,246)))
 
     for i in range (310,327):
         if(i!=312 and i!= 319 and i!= 313 and i!=320):
-            lines.append(line(str(i),str(i+1), GREEN))
-    lines.append(line(str(312),str(314), GREEN))    
-    lines.append(line(str(319),str(321), GREEN))
+            lines.append(line(str(i),str(i+1), (33,173,22)))
+    lines.append(line(str(312),str(314), (33,173,22)))    
+    lines.append(line(str(319),str(321), (33,173,22)))
 
 
 
@@ -405,12 +432,10 @@ def game():
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+                main_menu()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -449,7 +474,36 @@ def game():
         pygame.display.flip()
         pygame.display.update()
         mainClock.tick(60)
+
+def credits():
+    images_bg = load_images(path=Path('../resources/art/background_menu'))
+    fondo = MenuBackground(position=(0, 0), images=images_bg)
+    bg_sprites = pygame.sprite.Group()
+    marcoCreditos = Creditos()
+    bg_sprites.add(marcoCreditos)
+    bg_sprites.add(fondo)
+    while True:
+        dt = clock.tick(FPS) / 1000
  
+        mx, my = pygame.mouse.get_pos()
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    main_menu()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        bg_sprites.update(dt)
+        bg_sprites.draw(screen)
+        pygame.display.update()
+        mainClock.tick(60)
  
 main_menu()
 game()

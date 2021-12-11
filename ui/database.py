@@ -243,7 +243,7 @@ def get_time(origin: str, destination: str) -> float:
             return float(times_3[destination][origin])
     elif stations_connections.get(origin) is not None \
             and stations_connections.get(origin).__contains__(destination):
-        return 10.0  # TODO valor random de 2 min para los transbordos
+        return 5.0  # TODO valor random de 2 min para los transbordos
     else:
         return -1.0
 
