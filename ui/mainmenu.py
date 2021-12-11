@@ -64,10 +64,9 @@ class Titulo(pygame.sprite.Sprite):
 class Creditos(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.img = titulo
-        self.image = self.image = pygame.transform.scale(self.img, (2000,2000)) 
+        self.image = creditos
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT/4)
+        self.rect.center = (WIDTH / 2, HEIGHT/2)
     
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self, position, images):
@@ -286,7 +285,7 @@ def select_lines(route):
 
         if (l is not None): 
             l.select()
-            pygame.time.delay(500)
+            pygame.time.delay(333)
             DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color)             
             pygame.display.update()
 
@@ -492,8 +491,9 @@ def credits():
     fondo = MenuBackground(position=(0, 0), images=images_bg)
     bg_sprites = pygame.sprite.Group()
     marcoCreditos = Creditos()
-    bg_sprites.add(marcoCreditos)
     bg_sprites.add(fondo)
+    bg_sprites.add(marcoCreditos)
+
     while True:
         dt = clock.tick(FPS) / 1000
  
@@ -507,7 +507,6 @@ def credits():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     main_menu()
-                    sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
