@@ -1,5 +1,9 @@
 import configparser
+
+import requests
+
 import values
+
 
 config = configparser.ConfigParser()  # https://docs.python.org/3/library/configparser.html
 config.read(values.API_KEY_FILE)

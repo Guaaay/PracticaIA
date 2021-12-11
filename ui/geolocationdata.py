@@ -4,6 +4,7 @@ import os.path
 from cte import *
 import values
 import json
+from geopy import distance
 
 
 def load_geolocation_data() -> None:
@@ -77,12 +78,11 @@ def get_distance(origin: str, destination: str) -> float:
         :param destination: Name of destination station
         :return: distance between stations or -1 if the stations are invalid (p.e. dont exist)
         """
-    stations_geolocation: dict[str, tuple[float, float]] = {}
     if origin == destination:
         return 0
     coords_origin = stations_geolocation[origin]
     coords_destination = stations_geolocation[destination]
-    return geopy.distance.distance(coords_origin, coords_destination).km
+    return distance.distance(coords_origin, coords_destination).km
 
 
 
