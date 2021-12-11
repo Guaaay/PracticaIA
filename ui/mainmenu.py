@@ -470,12 +470,21 @@ def game():
                 for s in stations:
                     if s.rect.collidepoint(pos):
                         tiempo = select_station(s)
-                        
-                        
-                    
-            
+
+
         bg_game.draw(screen)
-        
+
+
+        if(tiempo >= 0):
+            tiempo_group.draw(screen)
+            draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 420)
+            draw_text(lines_number_station[int(clicked[0].id)], font, (67, 89, 60), screen, 1405, 460)
+            draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 500)
+            draw_text(lines_number_station[int(clicked[1].id)], font, (67, 89, 60), screen, 1405, 540)
+            draw_text('Tiempo estimado: ', font, (17, 20, 38), screen, 1405, 580)
+            draw_text( f"{round(tiempo,2)} minutos", font, (67, 89, 60), screen, 1405, 620)
+      
+             
                 
           #River
         DrawThickLine(screen, (1251, 0) ,(1251,726), 20, WATER)    
@@ -491,16 +500,7 @@ def game():
             
         
        
-        if(tiempo >= 0):
-            tiempo_group.draw(screen)
-            draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 420)
-            draw_text(lines_number_station[int(clicked[0].id)], font, (67, 89, 60), screen, 1405, 460)
-            draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 500)
-            draw_text(lines_number_station[int(clicked[1].id)], font, (67, 89, 60), screen, 1405, 540)
-            draw_text('Tiempo estimado: ', font, (17, 20, 38), screen, 1405, 580)
-            draw_text(str(tiempo) + " minutos", font, (67, 89, 60), screen, 1405, 620)
       
-
 
         stations.draw(screen)        
         pygame.display.flip()
