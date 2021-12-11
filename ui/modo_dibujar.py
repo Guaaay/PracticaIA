@@ -59,14 +59,14 @@ def main () :
     # Get inputs
     for event in pygame.event.get() :
       if event.type == QUIT :
-        print(draw)
+        #print(draw)
         pygame.quit()
         sys.exit()
 
       if event.type == pygame.MOUSEBUTTONUP:
         pos = pygame.mouse.get_pos()
         draw.append(pos)
-        print(pos)
+        #print(pos)
         
     # Processing
     # This section will be built out later

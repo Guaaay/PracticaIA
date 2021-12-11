@@ -182,7 +182,7 @@ class Station(pygame.sprite.Sprite):
         self.test = 0
         self.id = id
         self.img = pygame.image.load(Path(f"../resources/art/estaciones/{id}.png"))
-        self.image = pygame.transform.scale(self.img, (90,90)) 
+        self.image = pygame.transform.scale(self.img, (70,70)) 
         self.rect = self.image.get_rect()
         self.rect.center = (coord[0], coord[1])
         self.selected = False
@@ -190,10 +190,10 @@ class Station(pygame.sprite.Sprite):
     def select(self):
         if self.selected:
             self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}.png"))
-            self.image = pygame.transform.scale(self.img, (90,90))             
+            self.image = pygame.transform.scale(self.img, (70,70))             
         else:           
             self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}s.png"))
-            self.image = pygame.transform.scale(self.img, (90,90)) 
+            self.image = pygame.transform.scale(self.img, (70,70)) 
         self.selected = not self.selected
 
         
@@ -252,8 +252,8 @@ def get_line(origin, dest):
 #Devuelve la ruta para ir de una estación a otra
 def calculate_route(origin, dest): 
     #Aquí se llamaría a la función que nos devuelve el map con las líneas a cambiar de color
-    print(int(origin.id))
-    print(int(dest.id))
+    #print(int(origin.id))
+    #print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
     ruta = algoritmo.best_route() # Ahora conseguimos una lista de estaciones por las q hemos pasado
     for i, est in enumerate(ruta):
@@ -263,8 +263,10 @@ def calculate_route(origin, dest):
     #    result[lines_stations_number[e]] = lines_stations_number[ruta[e]]
     # result = {value : key for (key, value) in result.items()}
     # print(result)
-    print(ruta)
+    #print(ruta)
     
+    #print("EL TIEMPO EMPLEADO ES: ",calculate_time(ruta))
+
     
     return ruta
 
@@ -281,7 +283,7 @@ def calculate_time(ruta: list) -> float:
 #Selecciona las lineas de una ruta y les cambia el color
 
 def select_lines(route): 
-    print("---------------------", route)   
+    #print("---------------------", route)   
 
     for i in range(0, len(route)-1):
         l = get_line(str(route[i]),str(route[i+1]))     
@@ -333,7 +335,6 @@ pygame.init()
 pygame.display.set_caption('game base')
 screen = pygame.display.set_mode((WIDTH, HEIGHT),0,32)
 
-print(pygame.font.get_fonts())
 font = pygame.font.Font('Minecraft.ttf', 35)
  
 def draw_text(text, font, color, surface, x, y):
@@ -361,6 +362,7 @@ def main_menu():
     bg_sprites.add(titulo)
     bg_sprites.add(tren)
     click = False
+    
 
     while True:
         dt = clock.tick(FPS) / 1000
@@ -446,7 +448,7 @@ def game():
 
 
     for l in lines:           
-            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 12, l.color) 
             pygame.display.update()            
 
     click = False
@@ -464,7 +466,7 @@ def game():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                print(pos)
+                #print(pos)
                 for s in stations:
                     if s.rect.collidepoint(pos):
                         tiempo = select_station(s)
@@ -484,7 +486,7 @@ def game():
         #lineas
        
         for l in lines:          
-            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color) 
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 12, l.color) 
             #pygame.draw.line(screen, l.color, estaciones[l.origin], estaciones[l.dest], 10)   
             
         
@@ -494,7 +496,7 @@ def game():
             draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 427)
             draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 535)
        
-       
+      
 
 
         stations.draw(screen)        
