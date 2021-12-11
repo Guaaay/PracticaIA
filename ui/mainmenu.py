@@ -60,6 +60,13 @@ class Titulo(pygame.sprite.Sprite):
         self.image = self.image = pygame.transform.scale(self.img, (2000,2000)) 
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT/4)
+
+class Creditos(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = creditos
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT/2)
     
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self, position, images):
@@ -76,7 +83,25 @@ class MenuBackground(pygame.sprite.Sprite):
 
         self.animation_frames = 6
         self.current_frame = 0
+    def update(self,dt):
+        """This is the method that's being called when 'botonstart.update(dt)' is called.""" 
+        # Switch between the two update methods by commenting/uncommenting.
+        self.update_time_dependent(dt)
+        # self.update_frame_dependent()
 
+    def update_time_dependent(self, dt):
+        """
+        Updates the image of Sprite approximately every 0.1 second.
+
+        Args:
+            dt: Time elapsed between each frame.
+        """
+
+        self.current_time += dt
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            self.index = (self.index + 1) % len(self.images)
+            self.image = self.images[self.index]
 
 class GameBackground(pygame.sprite.Sprite):
     def __init__(self, position, image):
@@ -150,7 +175,7 @@ class Station(pygame.sprite.Sprite):
         self.test = 0
         self.id = id
         self.img = pygame.image.load(Path(f"../resources/art/estaciones/{id}.png"))
-        self.image = pygame.transform.scale(self.img, (90,90)) 
+        self.image = pygame.transform.scale(self.img, (60,60)) 
         self.rect = self.image.get_rect()
         self.rect.center = (coord[0], coord[1])
         self.selected = False
@@ -158,10 +183,10 @@ class Station(pygame.sprite.Sprite):
     def select(self):
         if self.selected:
             self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}.png"))
-            self.image = pygame.transform.scale(self.img, (90,90))             
+            self.image = pygame.transform.scale(self.img, (60,60))             
         else:           
             self.img = pygame.image.load(Path(f"../resources/art/estaciones/{self.id}s.png"))
-            self.image = pygame.transform.scale(self.img, (90,90)) 
+            self.image = pygame.transform.scale(self.img, (60,60)) 
         self.selected = not self.selected
 
         
@@ -220,8 +245,8 @@ def get_line(origin, dest):
 #Devuelve la ruta para ir de una estación a otra
 def calculate_route(origin, dest): 
     #Aquí se llamaría a la función que nos devuelve el map con las líneas a cambiar de color
-    print(int(origin.id))
-    print(int(dest.id))
+    #print(int(origin.id))
+    #print(int(dest.id))
     algoritmo = Algoritmo(int(origin.id),int(dest.id), adjacent_stations)
     ruta = algoritmo.best_route() # Ahora conseguimos una lista de estaciones por las q hemos pasado
     for i, est in enumerate(ruta):
@@ -231,9 +256,9 @@ def calculate_route(origin, dest):
     #    result[lines_stations_number[e]] = lines_stations_number[ruta[e]]
     # result = {value : key for (key, value) in result.items()}
     # print(result)
-    print(ruta)
+    #print(ruta)
     
-    print("EL TIEMPO EMPLEADO ES: ",calculate_time(ruta))
+    #print("EL TIEMPO EMPLEADO ES: ",calculate_time(ruta))
     
     return ruta
 
@@ -250,7 +275,7 @@ def calculate_time(ruta: list) -> float:
 #Selecciona las lineas de una ruta y les cambia el color
 
 def select_lines(route): 
-    print("---------------------", route)   
+    #print("---------------------", route)   
 
     for i in range(0, len(route)-1):
         l = get_line(str(route[i]),str(route[i+1]))     
@@ -260,7 +285,7 @@ def select_lines(route):
 
         if (l is not None): 
             l.select()
-            pygame.time.delay(500)
+            pygame.time.delay(333)
             DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color)             
             pygame.display.update()
 
@@ -341,7 +366,7 @@ def main_menu():
                 botonstart.draw(screen)
                 pygame.display.update()
                 
-                pygame.time.delay(500)
+                pygame.time.delay(200)
                 game()
     
         else:
@@ -353,8 +378,8 @@ def main_menu():
                 botoncreditos.draw(screen)
                 pygame.display.update()
                 
-                pygame.time.delay(300)
-                game()
+                pygame.time.delay(100)
+                credits()
     
         else:
             creditsButton.no_hover()
@@ -386,6 +411,7 @@ def game():
     bg_game = pygame.sprite.Group()
     bg_game.add(game_back)
     
+    
    
     for e in estaciones:        
         pos_e = estaciones[e]
@@ -393,16 +419,16 @@ def game():
 
     for i in range (110,127):
 
-        lines.append(line(str(i),str(i+1), RED))
+        lines.append(line(str(i),str(i+1), (199,14,14)))
 
     for i in range (210,227):
-        lines.append(line(str(i),str(i+1), BLUE))
+        lines.append(line(str(i),str(i+1), (56,96,246)))
 
     for i in range (310,327):
         if(i!=312 and i!= 319 and i!= 313 and i!=320):
-            lines.append(line(str(i),str(i+1), GREEN))
-    lines.append(line(str(312),str(314), GREEN))    
-    lines.append(line(str(319),str(321), GREEN))
+            lines.append(line(str(i),str(i+1), (33,173,22)))
+    lines.append(line(str(312),str(314), (33,173,22)))    
+    lines.append(line(str(319),str(321), (33,173,22)))
 
 
 
@@ -418,16 +444,14 @@ def game():
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+                main_menu()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    main_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                print(pos)
+                #print(pos)
                 for s in stations:
                     if s.rect.collidepoint(pos):
                         select_station(s)
@@ -462,7 +486,36 @@ def game():
         pygame.display.flip()
         pygame.display.update()
         mainClock.tick(60)
+
+def credits():
+    images_bg = load_images(path=Path('../resources/art/background_menu'))
+    fondo = MenuBackground(position=(0, 0), images=images_bg)
+    bg_sprites = pygame.sprite.Group()
+    marcoCreditos = Creditos()
+    bg_sprites.add(fondo)
+    bg_sprites.add(marcoCreditos)
+
+    while True:
+        dt = clock.tick(FPS) / 1000
  
+        mx, my = pygame.mouse.get_pos()
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    main_menu()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        bg_sprites.update(dt)
+        bg_sprites.draw(screen)
+        pygame.display.update()
+        mainClock.tick(60)
  
 main_menu()
 game()
