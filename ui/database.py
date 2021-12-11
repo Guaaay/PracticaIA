@@ -161,7 +161,7 @@ adjacent_stations: dict[str, tuple[str]] = {
     "Obolon": ["Minska", "Pochaina"],
     "Pochaina": ["Obolon", "Tarasa Shevchenka"],
     "Tarasa Shevchenka": ["Pochaina", "Kontraktova Ploshcha"],
-    "Kontraktova Ploshcha": ["Tarasa Shevchenka", "Politekhnichnyi Instytut"],
+    "Kontraktova Ploshcha": ["Tarasa Shevchenka", "Poshtova Ploshcha"],
     "Poshtova Ploshcha": ["Kontraktova Ploshcha", "Maidan Nezalezhnosti"],
     "Maidan Nezalezhnosti": ["Poshtova Ploshcha", "Ploshcha Lva Tolstoho", "Khreshchatyk"],
     "Ploshcha Lva Tolstoho": ["Maidan Nezalezhnosti", "Olimpiiska", "Palats Sportu"],
@@ -176,7 +176,7 @@ adjacent_stations: dict[str, tuple[str]] = {
     "Teremky": ["Ipodrom"],
     # Line 3
     "Syrets": ["Dorohozhychi"],
-    "Dorohozhychi": ["Akademmistechko", "Lukianivska"],
+    "Dorohozhychi": ["Syrets", "Lukianivska"],
     "Lukianivska": ["Dorohozhychi", "Zoloti Vorota"],
     "Zoloti Vorota": ["Lukianivska", "Palats Sportu", "Teatralna"],
     "Palats Sportu": ["Zoloti Vorota", "Klovska", "Ploshcha Lva Tolstoho"],
@@ -243,7 +243,7 @@ def get_time(origin: str, destination: str) -> float:
             return float(times_3[destination][origin])
     elif stations_connections.get(origin) is not None \
             and stations_connections.get(origin).__contains__(destination):
-        return 2.0  # TODO valor random de 2 min para los transbordos
+        return 10.0  # TODO valor random de 2 min para los transbordos
     else:
         return -1.0
 
