@@ -1,5 +1,6 @@
 from queue import PriorityQueue
 from database import *
+import geolocationdata
 '''
 diccionario de arrays que tiene como key el nombre de la estación y como value el array de los vecinos de dicha estación
 calculamos el tiempo total como la suma de los caminos entre nodos vecinos y al final le sumamos el total de paradas realizadas por el metro*20s
@@ -72,4 +73,5 @@ class Algoritmo():
         return None
 
     def h(self, p1, p2):
-        return get_time(p1, p2) * 1.5
+        return get_distance(p1, p2) / 100 * 60
+
