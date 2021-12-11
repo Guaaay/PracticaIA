@@ -67,6 +67,13 @@ class Creditos(pygame.sprite.Sprite):
         self.image = creditos
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT/2)
+
+class Tiempo(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = tiempo_imagen
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 1.2, HEIGHT/2)
     
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self, position, images):
@@ -258,7 +265,6 @@ def calculate_route(origin, dest):
     # print(result)
     print(ruta)
     
-    print("EL TIEMPO EMPLEADO PUTOOOOOOO: ",calculate_time(ruta))
     
     return ruta
 
@@ -283,7 +289,7 @@ def select_lines(route):
     #for e in route:
         #l = get_line(str(e),str(route[e]))        
 
-        if (l is not None): 
+        if (l is not None):
             l.select()
             pygame.time.delay(333)
             DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color)             
@@ -308,7 +314,12 @@ def select_station(s):
                 clicked.append(s)
             
             if(len(clicked)==2):
-                select_lines(calculate_route(clicked[0], clicked[1])) 
+                ruta = calculate_route(clicked[0], clicked[1])
+                tiempo = calculate_time(ruta)
+                select_lines(ruta) 
+                return tiempo
+            else :
+                return -1
 
 def deselect_all_lines():
     for line in lines:
@@ -321,8 +332,9 @@ mainClock = pygame.time.Clock()
 pygame.init()
 pygame.display.set_caption('game base')
 screen = pygame.display.set_mode((WIDTH, HEIGHT),0,32)
- 
-font = pygame.font.SysFont(None, 20)
+
+print(pygame.font.get_fonts())
+font = pygame.font.Font('Minecraft.ttf', 35)
  
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -352,7 +364,6 @@ def main_menu():
 
     while True:
         dt = clock.tick(FPS) / 1000
-        draw_text('main menu', font, (255, 255, 255), screen, 20, 20)
  
         mx, my = pygame.mouse.get_pos()
  
@@ -408,8 +419,11 @@ def game():
     
     game_back = GameBackground(position = (0,0),image = game_background)
     bg_game = pygame.sprite.Group()
+    tiempo_group = pygame.sprite.Group()
     bg_game.add(game_back)
-    
+    tiempo = -1
+    tiempo_imagen = Tiempo()
+    tiempo_group.add(tiempo_imagen)
     
    
     for e in estaciones:        
@@ -453,7 +467,7 @@ def game():
                 print(pos)
                 for s in stations:
                     if s.rect.collidepoint(pos):
-                        select_station(s)
+                        tiempo = select_station(s)
                         
                         
                     
@@ -475,8 +489,10 @@ def game():
             
         
        
-        
-        draw_text('game', font, (255, 255, 255), screen, 20, 20)
+        if(tiempo >= 0):
+            tiempo_group.draw(screen)
+            draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 427)
+            draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 535)
        
        
 
