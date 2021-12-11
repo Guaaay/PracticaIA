@@ -294,7 +294,7 @@ def select_lines(route):
         if (l is not None):
             l.select()
             pygame.time.delay(333)
-            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 6, l.color)             
+            DrawThickLine(screen, estaciones[l.origin], estaciones[l.dest], 12, l.color)             
             pygame.display.update()
 
 
@@ -493,9 +493,12 @@ def game():
        
         if(tiempo >= 0):
             tiempo_group.draw(screen)
-            draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 427)
-            draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 535)
-       
+            draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 420)
+            draw_text(lines_number_station[int(clicked[0].id)], font, (67, 89, 60), screen, 1405, 460)
+            draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 500)
+            draw_text(lines_number_station[int(clicked[1].id)], font, (67, 89, 60), screen, 1405, 540)
+            draw_text('Tiempo estimado: ', font, (17, 20, 38), screen, 1405, 580)
+            draw_text(str(tiempo) + " minutos", font, (67, 89, 60), screen, 1405, 620)
       
 
 
