@@ -73,4 +73,4 @@ class Algoritmo():
         return None
 
     def h(self, p1, p2):
-        return get_distance(p1, p2) / 36 * 60
+        return get_distance(p1, p2) / 100 * 60
