@@ -1,9 +1,10 @@
 import database
 import restapi
 import os.path
-import cte
+from cte import *
 import values
 import json
+from geopy import distance
 
 
 def load_geolocation_data() -> None:
@@ -54,7 +55,7 @@ def load_stations_geolocation() -> None:
 
         # Load if json exists locally, otherwise send an API request
         if not os.path.isfile(file_name):
-            geolocationdata.load_geolocation_data()
+            load_geolocation_data()
 
         raw_json = json.load(open(file_name))  # Load saved json
         if len(raw_json['results']) > 0:  # No data in json
@@ -70,7 +71,6 @@ stations_geolocation: dict[str, tuple[float, float]] = {}
 load_stations_geolocation()
 
 
-
 def get_distance(origin: str, destination: str) -> float:
     """
         Distance in Km from station "origin" to station "destination".
@@ -82,4 +82,8 @@ def get_distance(origin: str, destination: str) -> float:
         return 0
     coords_origin = stations_geolocation[origin]
     coords_destination = stations_geolocation[destination]
-    return geopy.distance.distance(coords_origin, coords_destination).km
+    return distance.distance(coords_origin, coords_destination).km
+
+
+
+

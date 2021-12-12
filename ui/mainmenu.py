@@ -470,12 +470,12 @@ def game():
                 for s in stations:
                     if s.rect.collidepoint(pos):
                         tiempo = select_station(s)
-                        
-                        
-                    
-            
+
+
         bg_game.draw(screen)
-        
+
+      
+             
                 
           #River
         DrawThickLine(screen, (1251, 0) ,(1251,726), 20, WATER)    
@@ -492,7 +492,6 @@ def game():
         
        
         if(tiempo >= 0):
-            loading = False
             tiempo_group.draw(screen)
             draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 420)
             draw_text(lines_number_station[int(clicked[0].id)], font, (67, 89, 60), screen, 1405, 460)
@@ -501,7 +500,6 @@ def game():
             draw_text('Tiempo estimado: ', font, (17, 20, 38), screen, 1405, 580)
             draw_text(str(floor(tiempo)) + " m " + str(int(round((tiempo%1)*60,2))) + " s" ,font, (67, 89, 60), screen, 1405, 620)
       
-
 
         stations.draw(screen)        
         pygame.display.flip()

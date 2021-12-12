@@ -1,5 +1,9 @@
 import configparser
+
+import requests
+
 import values
+
 
 config = configparser.ConfigParser()  # https://docs.python.org/3/library/configparser.html
 config.read(values.API_KEY_FILE)
@@ -11,12 +15,12 @@ def api_key() -> str:
 
 def get_geocoding_data(station_name):
     params_query = {
-        'address': station_name + ' metro station',
+        'address': station_name + ' metro station kiev',
         'key': api_key()}
     response = requests.get(values.GEOCODING_URL, params=params_query)
 
     if len(response.json()['results']) < 1:  # If it yielded no results, try with a different request
-        params_query['address'] = station_name + ' station'
+        params_query['address'] = station_name + ' station kiev'
         response = requests.get(values.GEOCODING_URL, params=params_query)
 
     return response.json()
