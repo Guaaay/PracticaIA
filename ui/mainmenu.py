@@ -3,6 +3,7 @@
 
 import pygame, sys
 from pygame import mixer
+from pygame.display import update
 from cte import *
 from pygame.locals import *
 from math import atan2, cos, degrees, radians, sin
@@ -10,6 +11,7 @@ import pygame.gfxdraw
 from algoritmo import * 
 #from algoritmo import *
 from pathlib import Path
+from math import floor
 
 clock = pygame.time.Clock()
 lines = []
@@ -283,8 +285,7 @@ def calculate_time(ruta: list) -> float:
 #Selecciona las lineas de una ruta y les cambia el color
 
 def select_lines(route): 
-    #print("---------------------", route)   
-
+    #print("---------------------", route)
     for i in range(0, len(route)-1):
         l = get_line(str(route[i]),str(route[i+1]))     
            
@@ -418,7 +419,6 @@ def main_menu():
         mainClock.tick(60)
  
 def game():
-    
     game_back = GameBackground(position = (0,0),image = game_background)
     bg_game = pygame.sprite.Group()
     tiempo_group = pygame.sprite.Group()
@@ -492,13 +492,14 @@ def game():
         
        
         if(tiempo >= 0):
+            loading = False
             tiempo_group.draw(screen)
             draw_text('Estacion origen: ', font, (17, 20, 38), screen, 1405, 420)
             draw_text(lines_number_station[int(clicked[0].id)], font, (67, 89, 60), screen, 1405, 460)
             draw_text('Estacion destino: ', font, (17, 20, 38), screen, 1405, 500)
             draw_text(lines_number_station[int(clicked[1].id)], font, (67, 89, 60), screen, 1405, 540)
             draw_text('Tiempo estimado: ', font, (17, 20, 38), screen, 1405, 580)
-            draw_text(str(tiempo) + " minutos", font, (67, 89, 60), screen, 1405, 620)
+            draw_text(str(floor(tiempo)) + " m " + str(int(round((tiempo%1)*60,2))) + " s" ,font, (67, 89, 60), screen, 1405, 620)
       
 
 
