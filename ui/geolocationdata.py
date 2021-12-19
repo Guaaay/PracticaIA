@@ -18,12 +18,13 @@ def load_geolocation_data() -> None:
         file_name = values.STATION_JSONS + station + '.json'
 
         # Load if json exists locally, otherwise send an API request
-        if os.path.isfile(file_name):
-            raw_json = json.load(open(file_name))  # Load saved json
-            if len(raw_json['results']) < 1:  # No data in json
-                send_api_request(station, file_name)
-        else:
+        if not os.path.isfile(file_name):
             send_api_request(station, file_name)
+
+        raw_json = json.load(open(file_name))  # Load saved json
+        if len(raw_json['results']) < 1:  # No data in json
+            send_api_request(station, file_name)
+            raw_json = json.load(open(file_name))  # Load saved json
 
         geometry = raw_json['results'][0]['geometry']['location']
         latitude = geometry['lat']
